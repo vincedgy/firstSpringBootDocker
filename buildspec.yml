@@ -3,19 +3,25 @@ version: 0.1
 phases:
   pre_build:
     commands:
-      #- echo Logging in to Amazon ECR...
+      - echo PreBuild Compile...
+      - gradle compile
+      - echo PreBuild Test...
+      - gradle test
       #- $(aws ecr get-login --region $AWS_REGION)
   build:
     commands:
-      - gradle build buildDocker
-      - docker build -t $IMAGE ./src/main/docker
-      - "docker tag $IMAGE $REPO/$IMAGE:${CODEBUILD_BUILD_ID##*:}"
+      - echo Building JAR with Gradle...
+      - gradle build
+      #- gradle buildDocker
+      #- docker build -t $IMAGE ./src/main/docker
+      #- "docker tag $IMAGE $REPO/$IMAGE:${CODEBUILD_BUILD_ID##*:}"
   post_build:
     commands:
       - echo Build completed on `date`
-      - echo Pushing the Docker image...
-      - "docker push $REPO/$IMAGE:${CODEBUILD_BUILD_ID##*:}"
+      #- echo Pushing the Docker image...
+      #- "docker push $REPO/$IMAGE:${CODEBUILD_BUILD_ID##*:}"
       - "echo {\\\"image\\\":\\\"$REPO/$IMAGE:${CODEBUILD_BUILD_ID##*:}\\\"} > image.json"
 artifacts:
   files:
+    - build/libs/
     - 'image.json'
