@@ -3,9 +3,7 @@ version: 0.1
 phases:
   pre_build:
     commands:
-      - echo PreBuild Compile...
-      - gradle compile
-      - echo PreBuild Test...
+      - echo PreBuild Compile & test...
       - gradle test
       #- $(aws ecr get-login --region $AWS_REGION)
   build:
