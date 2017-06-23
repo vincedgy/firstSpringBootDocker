@@ -6,16 +6,16 @@ phases:
       #- $(aws ecr get-login --region $AWS_REGION)
   build:
     commands:
-      - echo PreBuild Compile & test...
+      - echo 'PreBuild Compile and test...'
       - gradle test
-      - echo Building JAR with Gradle...
+      - echo 'Building JAR with Gradle...'
       - gradle build
       #- gradle buildDocker
       #- docker build -t $IMAGE ./src/main/docker
       #- "docker tag $IMAGE $REPO/$IMAGE:${CODEBUILD_BUILD_ID##*:}"
   post_build:
     commands:
-      - echo Build completed on `date`
+      - echo "Build completed on `date`"
       #- echo Pushing the Docker image...
       #- "docker push $REPO/$IMAGE:${CODEBUILD_BUILD_ID##*:}"
       - "echo {\\\"image\\\":\\\"$REPO/$IMAGE:${CODEBUILD_BUILD_ID##*:}\\\"} > image.json"
