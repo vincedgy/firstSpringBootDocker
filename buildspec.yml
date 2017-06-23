@@ -3,13 +3,12 @@ version: 0.1
 phases:
   pre_build:
     commands:
-      - echo Logging in to Amazon ECR...
-      - $(aws ecr get-login --region $AWS_REGION)
+      #- echo Logging in to Amazon ECR...
+      #- $(aws ecr get-login --region $AWS_REGION)
   build:
     commands:
-      - echo Build started on `date`
-      - echo Building the Docker image...
-      - docker build -t $IMAGE .
+      - gradle build buildDocker
+      - docker build -t $IMAGE ./src/main/docker
       - "docker tag $IMAGE $REPO/$IMAGE:${CODEBUILD_BUILD_ID##*:}"
   post_build:
     commands:
